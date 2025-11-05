@@ -1,5 +1,6 @@
 package com.security.user;
 
+import com.security.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/")
-    public List<User> getUsers() {
+    @GetMapping
+    public List<UserResponse> getUsers() {
         return userService.getUsers();
     }
 }
