@@ -33,6 +33,14 @@ public class AuthService {
                     .build();
         }
 
+        if (userRepo.findByEmail(request.getEmail()).isPresent()) {
+            return AuthResponse
+                    .builder()
+                    .token(null)
+                    .message("This email is already being used!")
+                    .build();
+        }
+
         var user = User.builder()
                 .username(request.getUsername())
                 .password(encoder.encode(request.getPassword()))

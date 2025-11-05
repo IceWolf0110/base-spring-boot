@@ -22,9 +22,14 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Column(unique = true, nullable = false)
     private String username;
-    private String password;
+
+    @Column(unique = true)
     private String email;
+
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
