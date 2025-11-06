@@ -1,8 +1,8 @@
 package com.security.auth;
 
-import com.security.auth.dto.AuthResponse;
-import com.security.auth.dto.LoginRequest;
-import com.security.auth.dto.RegisterRequest;
+import com.security.dto.AuthResponse;
+import com.security.dto.LoginRequest;
+import com.security.dto.RegisterRequest;
 import com.security.config.jwt.JwtService;
 import com.security.user.Role;
 import com.security.user.User;
@@ -10,7 +10,6 @@ import com.security.user.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserDetailsService userDetailsService;
     private final UserRepo userRepo;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;

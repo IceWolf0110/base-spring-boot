@@ -1,4 +1,4 @@
-package com.security.auth.dto;
+package com.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
-    private String token;
-    private String message;
+public class UserResponse {
+    private String username;
+    private String email;
+    private String role;
 }

@@ -1,7 +1,6 @@
 package com.security.user;
 
-import com.security.auth.dto.AuthResponse;
-import com.security.user.dto.UserResponse;
+import com.security.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
