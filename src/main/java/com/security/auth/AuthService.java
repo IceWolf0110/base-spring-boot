@@ -8,9 +8,10 @@ import com.security.user.Role;
 import com.security.user.User;
 import com.security.user.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +23,23 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public AuthResponse register(RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(RegisterRequest request) {
         if (userRepo.findByUsername(request.getUsername()).isPresent()) {
-            return AuthResponse
-                    .builder()
-                    .token(null)
-                    .message("User is already exist!")
-                    .build();
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(AuthResponse.builder()
+                            .token(null)
+                            .message("User already exists!")
+                            .build());
         }
 
         if (userRepo.findByEmail(request.getEmail()).isPresent()) {
-            return AuthResponse
-                    .builder()
-                    .token(null)
-                    .message("This email is already being used!")
-                    .build();
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(AuthResponse.builder()
+                            .token(null)
+                            .message("This email is already being used!")
+                            .build());
         }
 
         var user = User.builder()
@@ -48,33 +51,46 @@ public class AuthService {
 
         userRepo.save(user);
 
-        return AuthResponse
-                .builder()
-                .token(null)
-                .message("User register successful!")
-                .build();
+        return ResponseEntity.ok(
+                AuthResponse.builder()
+                        .token(null)
+                        .message("User register successful!")
+                        .build()
+        );
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(LoginRequest request) {
+        final String username = request.getUsername();
+
+        var user = userRepo.findByUsername(username).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(AuthResponse.builder()
+                            .token(null)
+                            .message("User not found with username: " + username)
+                            .build()
+                    );
+        }
+
+        final String password = request.getPassword();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
+                        username,
+                        password
                 )
         );
 
-        final String username = request.getUsername();
-
-        var user = userRepo.findByUsername(username)
-                .orElseThrow(()
-                        -> new UsernameNotFoundException("User not found with username: " + username));
-
         var jwtToken = jwtService.generateToken(user);
 
-        return AuthResponse
-                .builder()
-                .token(jwtToken)
-                .message("User login successful!")
-                .build();
+        return ResponseEntity.ok(
+                AuthResponse.builder()
+                        .token(jwtToken)
+                        .message("User login successful!")
+                        .build()
+        );
     }
+
 }
