@@ -1,6 +1,6 @@
 package com.security.user;
 
-import com.security.dto.UserResponse;
+import com.security.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
