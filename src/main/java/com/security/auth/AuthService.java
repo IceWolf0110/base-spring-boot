@@ -68,6 +68,7 @@ public class AuthService {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(AuthResponse.builder()
+                            .username(username)
                             .token(null)
                             .message("User not found with username: " + username)
                             .build()
@@ -87,6 +88,7 @@ public class AuthService {
 
         return ResponseEntity.ok(
                 AuthResponse.builder()
+                        .username(username)
                         .token(jwtToken)
                         .message("User login successful!")
                         .build()
