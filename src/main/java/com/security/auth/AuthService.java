@@ -1,8 +1,9 @@
 package com.security.auth;
 
-import com.security.auth.dto.AuthResponse;
+import com.security.auth.dto.LoginResponse;
 import com.security.auth.dto.LoginRequest;
 import com.security.auth.dto.RegisterRequest;
+import com.security.auth.dto.RegisterResponse;
 import com.security.config.jwt.JwtService;
 import com.security.user.Role;
 import com.security.user.User;
@@ -23,12 +24,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public ResponseEntity<AuthResponse> register(RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         if (userRepo.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(AuthResponse.builder()
-                            .token(null)
+                    .body(RegisterResponse.builder()
                             .message("User already exists!")
                             .build());
         }
@@ -36,8 +36,7 @@ public class AuthService {
         if (userRepo.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(AuthResponse.builder()
-                            .token(null)
+                    .body(RegisterResponse.builder()
                             .message("This email is already being used!")
                             .build());
         }
@@ -52,14 +51,13 @@ public class AuthService {
         userRepo.save(user);
 
         return ResponseEntity.ok(
-                AuthResponse.builder()
-                        .token(null)
+                RegisterResponse.builder()
                         .message("User register successful!")
                         .build()
         );
     }
 
-    public ResponseEntity<AuthResponse> login(LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(LoginRequest request) {
         final String username = request.getUsername();
 
         var user = userRepo.findByUsername(username).orElse(null);
@@ -67,7 +65,7 @@ public class AuthService {
         if (user == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(AuthResponse.builder()
+                    .body(LoginResponse.builder()
                             .username(username)
                             .token(null)
                             .message("User not found with username: " + username)
@@ -87,7 +85,7 @@ public class AuthService {
         var jwtToken = jwtService.generateToken(user);
 
         return ResponseEntity.ok(
-                AuthResponse.builder()
+                LoginResponse.builder()
                         .username(username)
                         .token(jwtToken)
                         .message("User login successful!")
