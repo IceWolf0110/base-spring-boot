@@ -28,4 +28,12 @@ public class UserService {
 
         return userList;
     }
+
+    public UserResponse getUserResponse(User user) {
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole().toString())
+                .build();
+    }
 }

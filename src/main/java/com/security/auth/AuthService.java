@@ -4,10 +4,11 @@ import com.security.auth.dto.LoginResponse;
 import com.security.auth.dto.LoginRequest;
 import com.security.auth.dto.RegisterRequest;
 import com.security.auth.dto.RegisterResponse;
-import com.security.config.jwt.JwtService;
+import com.security.jwt.JwtService;
 import com.security.user.Role;
 import com.security.user.User;
 import com.security.user.UserRepo;
+import com.security.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepo userRepo;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -66,8 +68,8 @@ public class AuthService {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(LoginResponse.builder()
-                            .username(username)
                             .token(null)
+                            .user(null)
                             .message("User not found with username: " + username)
                             .build()
                     );
@@ -86,9 +88,9 @@ public class AuthService {
 
         return ResponseEntity.ok(
                 LoginResponse.builder()
-                        .username(username)
                         .token(jwtToken)
                         .message("User login successful!")
+                        .user(userService.getUserResponse(user))
                         .build()
         );
     }

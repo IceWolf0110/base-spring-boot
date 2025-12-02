@@ -1,4 +1,4 @@
-package com.security.config.jwt;
+package com.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     private final String JWT_SECRET;
+    BlackListedTokenRepo blackListedTokenRepo;
 
     public JwtService() {
         try {
@@ -84,5 +85,16 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public void blacklistToken(String token) {
+        Date expiration = extractExpiration(token);
+        blackListedTokenRepo.save(
+                new BlackListedToken(token, expiration.getTime())
+        );
+    }
+
+    public boolean isBlacklistedToken(String token) {
+        return blackListedTokenRepo.existsByToken(token);
     }
 }

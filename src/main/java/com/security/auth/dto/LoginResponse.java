@@ -1,5 +1,6 @@
 package com.security.auth.dto;
 
+import com.security.user.dto.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponse {
-    private String username;
-    private String email;
     private String token;
     private String message;
+    private UserResponse user;
 }
