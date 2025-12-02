@@ -52,8 +52,6 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-
-
         return Jwts.builder()
                 .claims()
                 .add(extraClaims)
@@ -85,16 +83,5 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public void blacklistToken(String token) {
-        Date expiration = extractExpiration(token);
-        blackListedTokenRepo.save(
-                new BlackListedToken(token, expiration.getTime())
-        );
-    }
-
-    public boolean isBlacklistedToken(String token) {
-        return blackListedTokenRepo.existsByToken(token);
     }
 }
