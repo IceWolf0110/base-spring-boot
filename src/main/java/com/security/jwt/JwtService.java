@@ -19,7 +19,6 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     private final String JWT_SECRET;
-    BlackListedTokenRepo blackListedTokenRepo;
 
     public JwtService() {
         try {
@@ -57,7 +56,7 @@ public class JwtService {
                 .add(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .and()
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
