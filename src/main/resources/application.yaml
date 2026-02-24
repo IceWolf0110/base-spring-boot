@@ -1,14 +1,21 @@
 spring:
   application:
-    name: security
+    name: backend
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/server
+    url: jdbc:mariadb://localhost:3306/backend
     username: root
     password: "01102000"
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    database: mysql
+      ddl-auto: update
+    open-in-view: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          config: error
