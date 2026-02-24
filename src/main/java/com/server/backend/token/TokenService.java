@@ -31,7 +31,7 @@ public class TokenService {
                     ));
         }
 
-        if (!jwtService.isTokenUsernameValid(token, userDetails)) {
+        if (!jwtService.isTokenUsernameValid(token, userDetails) && !jwtService.isRefreshToken(token)) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(new TokenResponse(
