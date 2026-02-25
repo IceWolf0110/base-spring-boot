@@ -1,6 +1,8 @@
 package com.server.backend.user;
 
-import com.server.backend.user.dto.UserResponse;
+import com.server.backend.user.dto.request.UserUpdateRequest;
+import com.server.backend.user.dto.response.UserResponse;
+import com.server.backend.user.dto.response.UserUpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +33,13 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<UserUpdateResponse> updateUser(
+            @PathVariable Long id,
+            @RequestBody UserUpdateRequest request
+    ) {
+        return userService.updateUser(id, request);
     }
 }

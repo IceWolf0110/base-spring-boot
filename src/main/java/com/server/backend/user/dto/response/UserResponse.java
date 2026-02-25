@@ -1,6 +1,5 @@
-package com.server.backend.user.dto;
+package com.server.backend.user.dto.response;
 
-import com.server.backend.user.UserController;
 import com.server.backend.user.UserRole;
 
 public record UserResponse(
