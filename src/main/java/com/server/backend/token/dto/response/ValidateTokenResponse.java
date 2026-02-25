@@ -1,4 +1,4 @@
-package com.server.backend.token.response;
+package com.server.backend.token.dto.response;
 
 public record ValidateTokenResponse(
         boolean isTokenValid,

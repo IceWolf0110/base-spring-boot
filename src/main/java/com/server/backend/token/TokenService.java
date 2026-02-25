@@ -1,9 +1,9 @@
 package com.server.backend.token;
 
 import com.server.backend.jwt.JwtService;
-import com.server.backend.token.request.TokenRequest;
-import com.server.backend.token.response.TokenResponse;
-import com.server.backend.token.response.ValidateTokenResponse;
+import com.server.backend.token.dto.request.TokenRequest;
+import com.server.backend.token.dto.response.TokenResponse;
+import com.server.backend.token.dto.response.ValidateTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
